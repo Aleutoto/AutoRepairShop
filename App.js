@@ -1,33 +1,24 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import ServicesPage from './pages/ServicesPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import NotFoundPage from './pages/NotFoundPage';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-
-class App extends React.Component {
-  render() {
-    return (
-      <Router>
-        <div>
-          <Navbar />
-          <main>
-            <Switch>
-              <Route exact path="/" component={HomePage} />
-              <Route path="/services" component={ServicesPage} />
-              <Route path="/about" component={AboutPage} />
-              <LastPage path="/contact" component={ContactPage} />
-              <Route component={NotFoundPage} />
-            </Switch>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    );
-  }
+// Assume this function somewhere in your project makes an API call to fetch services
+async function fetchServices() {
+    const response = await fetch("https://api.yourautorepairshop.com/services");
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
 }
 
-export default App;
+// A simple cache object that stores the results
+let servicesCache = null;
+
+// Modified fetchServices to use cache
+async function fetchServicesWithCache() {
+    // Return cached data if available
+    if (servicesCache) return servicesCache;
+
+    const response = await fetch("https://api.yourautorepairshop.com/services");
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    servicesCache = await response.json(); // Store to cache after fetching
+    return servicesBer;
+}
