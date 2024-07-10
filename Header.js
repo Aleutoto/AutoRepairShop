@@ -1,6 +1,25 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+const NavigationMenu = () => {
+  return (
+    <ul className="navbar-nav">
+      <li className="nav-item">
+        <NavLink to="/" activeClassName="active" exact className="nav-link">Home</NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/services" activeClassName="active" className="nav-link">Services</NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/about" activeClassName="active" className="nav-link">About</NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/contact" activeClassName="active" className="nav-link">Contact</NavLink>
+      </li>
+    </ul>
+  );
+};
+
 const Header = () => {
   return (
     <header>
@@ -10,20 +29,7 @@ const Header = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink to="/" activeClassName="active" exact className="nav-link">Home</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/services" activeClassName="active" className="nav-link">Services</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/about" activeClassName="active" className="nav-link">About</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/contact" activeClassName="active" className="nav-link">Contact</NavLink>
-            </li>
-          </ul>
+          <NavigationMenu />
         </div>
       </nav>
     </header>
