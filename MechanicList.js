@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT + '/mechanics';
+
+const MECHANICS_API_URL = process.env.REACT_APP_API_ENDPOINT + '/mechanics';
+
 function MechanicsList() {
-    const [mechanics, setMechanics] = useState([]);
+    const [mechanicList, setMechanicList] = useState([]);
+
     useEffect(() => {
-        fetch(API_ENDPOINT)
-            .then(response => response.json())
-            .then(data => setMechanics(data))
-            .catch(error => console.error('Error fetching mechanics:', error));
+        fetchMechanics();
     }, []);
+
+    const fetchMechanics = () => {
+        fetch(MECHANICS_API_URL)
+            .then(response => response.json())
+            .then(mechanicData => setMechanicList(mechanicData))
+            .catch(error => console.error('Error fetching mechanic list:', error));
+    };
+
     return (
         <div>
-            <h2>Mechanics</h2>
+            <h2>Mechanics Directory</h2>
             <ul>
-                {mechanics.map(mechanic => (
+                {mechanicList.map(mechanic => (
                     <li key={mechanic.id}>
                         <Link to={`/mechanics/${mechanic.id}`}>
                             {mechanic.name}
@@ -24,4 +32,5 @@ function MechanicsList() {
         </div>
     );
 }
-export default MechanicsList;
+
+export default Mechanicsp
