@@ -3,19 +3,22 @@ import { Link } from 'react-router-dom';
 
 const MECHANICS_API_URL = process.env.REACT_APP_API_ENDPOINT + '/mechanics';
 
-function MechanicsList() {
+const MechanicsList = React.memo(() => {
     const [mechanicList, setMechanicList] = useState([]);
 
     useEffect(() => {
-        fetchMechanics();
-    }, []);
+        const fetchMechanics = () => {
+            fetch(MECHANICS_API_URL)
+                .then(response => response.json())
+                .then(mechanicData => setMechanicList(mechanicData))
+                .catch(error => console.error('Error fetching mechanic list:', error));
+        };
 
-    const fetchMechanics = () => {
-        fetch(MECHANICS_API_URL)
-            .then(response => response.json())
-            .then(mechanicData => setMechanicList(mechanicData))
-            .catch(error => console.error('Error fetching mechanic list:', error));
-    };
+        fetchMechanics();
+
+        return () => {
+        };
+    }, []);
 
     return (
         <div>
@@ -31,6 +34,6 @@ function MechanicsList() {
             </ul>
         </div>
     );
-}
+});
 
-export default Mechanicsp
+export default MechanicsList;
