@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-// Simple caching mechanism
 const partsCache = {};
 
 const PartsList = () => {
   const [parts, setParts] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchParts = async () => {
       const partsUrl = `${process.env.REACT_APP_API_URL}/parts`;
       
-      // Use cached data if available
       if (partsCache[partsUrl]) {
         console.log('Using cached parts data');
         setParts(partsCache[partsUrl]);
@@ -21,20 +20,31 @@ const PartsList = () => {
       try {
         const response = await fetch(partsUrl);
         if (!response.ok) {
-          throw new Error(`Failed to fetch parts: ${response.status}`);
+          setError(`Failed to fetch parts: ${response.status} ${response.statusText}`);
+          return;
         }
         const data = await response.json();
         
-        // Cache the fetched data
         partsCache[partsUrl] = data;
         setParts(data);
+        setError('');
       } catch (error) {
-        console.error('Failed to fetch parts:', error);
+        console.error('Network error occurred:', error);
+        setError('Network error: Could not load parts. Please try again later.');
       }
     };
 
     fetchParts();
   }, []);
+
+  if (error) {
+    return (
+      <div>
+        <h2>Parts List</h2>
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div>
