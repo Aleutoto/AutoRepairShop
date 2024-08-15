@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta viewport="width=device-width, initial-scale=1.0">
     <title>AutoRepairShop</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div id="app">
+        <!-- Button added below -->
+        <button id="newButton">Click Me</button>
+        <!-- Button addition ends here -->
     </div>
     <script src="./app.js"></script>
 </body>
 </html>
+```
+```javascript
+document.getElementById("newButton").addEventListener("click", function() {
+alert("Button clicked!");
+});
