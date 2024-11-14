@@ -1,0 +1,71 @@
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error(err));
+
+const MechanicSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    specialization: {
+        type: String,
+        required: true
+    },
+    yearsOfExperience: {
+        type: Number,
+        required: true
+    }
+});
+
+const Mechanic = mongoose.model('Mechanic', MechanicSchema);
+
+const PartSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    number: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    }
+});
+
+const Part = mongoose.model('Part', PartSchema);
+
+const OrderSchema = new mongoose.Schema({
+    mechanic: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Mechanic',
+        required: true
+    },
+    parts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Part'
+    }],
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'in progress', 'completed'],
+        default: 'pending'
+    }
+});
+
+const Order = mongoose.model('Order', OrderSchema);
+
+module.exports = {
+    Mechanic,
+    Part,
+    Order
+};
