@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 })
 .then(() => console.log('MongoDB connected'))
-.catch(err => console.error(err));
+.catch(err => console.error('MongoDB connection error:', err));
 
 const MechanicSchema = new mongoose.Schema({
     name: {
@@ -64,8 +64,19 @@ const OrderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', OrderSchema);
 
+async function createMechanic(mechanicData) {
+    try {
+        const mechanic = new Mechanic(mechanicData);
+        await mechanic.save();
+        console.log('Mechanic saved successfully:', mechanic);
+    } catch (err) {
+        console.error('Error saving mechanic:', err.message);
+    }
+}
+
 module.exports = {
     Mechanic,
     Part,
-    Order
+    Order,
+    createMechanic 
 };
