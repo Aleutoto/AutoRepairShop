@@ -14,15 +14,15 @@ const db = {
 };
 
 function findMechanicById(mechanicId) {
-    return db.mechanics.find(m => m.id == mechanicId);
+    return db.mechanics.find(m => m.id === mechanicId);
 }
 
 function findPartById(partId) {
-    return db.parts.find(p => p.id == partId);
+    return db.parts.find(p => p.id === partId);
 }
 
 function findOrderById(orderId) {
-    return db.orders.find(o => o.id == orderId);
+    return db.orders.find(o => o.id === orderId);
 }
 
 router.get('/mechanics', (req, res) => {
@@ -39,9 +39,11 @@ router.get('/mechanics/:mechanicId', (req, res) => {
 });
 
 router.post('/mechanics', (req, res) => {
-    const mechanicData = req.body;
-    db.mechanics.push(mechanicData);
-    res.status(201).send('Mechanic added');
+    const mechanicsData = Array.isArray(req.body) ? req.body : [req.body];
+    mechanicsData.forEach(mechanic => {
+        db.mechanics.push(mechanic);
+    });
+    res.status(201).send(`${mechanicsData.length} Mechanic(s) added`);
 });
 
 router.put('/mechanics/:mechanicId', (req, res) => {
@@ -56,7 +58,7 @@ router.put('/mechanics/:mechanicId', (req, res) => {
 
 router.delete('/mechanics/:mechanicId', (req, res) => {
     const { mechanicId } = req.params;
-    const index = db.mechanics.findIndex(m => m.id == mechanicId);
+    const index = db.mechanics.findIndex(m => m.id === mechanicId);
     if (index === -1) {
         return res.status(404).send('Mechanic not found to delete');
     }
